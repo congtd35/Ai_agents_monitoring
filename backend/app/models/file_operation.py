@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Text, DateTime, Integer, BigInteger, ForeignKey
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 import uuid
@@ -8,8 +9,8 @@ from ..core.database import Base
 class FileOperation(Base):
     __tablename__ = "file_operations"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    task_id = Column(String(36), ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    task_id = Column(UUID(as_uuid=True), ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False)
     operation_type = Column(String(10), nullable=False)  # 'create', 'modify', 'delete'
     file_path = Column(String(1000), nullable=False)
     file_name = Column(String(255))

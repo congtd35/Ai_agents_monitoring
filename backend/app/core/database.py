@@ -1,12 +1,10 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 from .config import settings
 
 # Create SQLAlchemy engine
 engine = create_engine(
-    settings.database_url,
-    connect_args={"check_same_thread": False} if "sqlite" in settings.database_url else {}
+    settings.database_url
 )
 
 # Create SessionLocal class
@@ -23,4 +21,3 @@ def get_db():
         yield db
     finally:
         db.close()
-

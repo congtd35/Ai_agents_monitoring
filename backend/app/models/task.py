@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Text, DateTime, Integer, DECIMAL, JSON, ForeignKey, BigInteger
+from sqlalchemy import Column, String, Text, DateTime, Integer, DECIMAL, ForeignKey, BigInteger
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship, column_property
 import uuid
@@ -8,8 +9,8 @@ from ..core.database import Base
 class Task(Base):
     __tablename__ = "tasks"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    project_id = Column(String(36), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    project_id = Column(UUID(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False)
     name = Column(String(200), nullable=False)
     description = Column(Text)
     jira_task_link = Column(String(500))
@@ -31,7 +32,7 @@ class Task(Base):
     
     # Chi phí
     cost_usd = Column(DECIMAL(10, 6), default=0)
-    cost_breakdown = Column(JSON, default={})
+    cost_breakdown = Column(JSONB, default={})
     
     # Số bước thực hiện
     total_steps = Column(Integer, default=0)
@@ -46,9 +47,9 @@ class Task(Base):
     
     # Metadata
     error_message = Column(Text)
-    logs = Column(JSON, default=[])
-    performance_metrics = Column(JSON, default={})
-    environment_info = Column(JSON, default={})
+    logs = Column(JSONB, default=[])
+    performance_metrics = Column(JSONB, default={})
+    environment_info = Column(JSONB, default={})
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())

@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Text, DateTime, Integer, DECIMAL, Boolean, UniqueConstraint
+from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 import uuid
 from ..core.database import Base
@@ -7,7 +8,7 @@ from ..core.database import Base
 class AgentModel(Base):
     __tablename__ = "agent_models"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     model_name = Column(String(100), nullable=False)
     provider = Column(String(50), nullable=False)  # 'openai', 'anthropic', 'google', etc.
     model_version = Column(String(20))

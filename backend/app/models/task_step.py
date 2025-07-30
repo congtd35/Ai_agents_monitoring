@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Text, DateTime, Integer, DECIMAL, JSON, ForeignKey, UniqueConstraint
+from sqlalchemy import Column, String, Text, DateTime, Integer, DECIMAL, ForeignKey, UniqueConstraint
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 import uuid
@@ -8,8 +9,8 @@ from ..core.database import Base
 class TaskStep(Base):
     __tablename__ = "task_steps"
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
-    task_id = Column(String(36), ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    task_id = Column(UUID(as_uuid=True), ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False)
     step_number = Column(Integer, nullable=False)
     step_name = Column(String(200))
     step_description = Column(Text)
@@ -27,7 +28,7 @@ class TaskStep(Base):
     step_cost_usd = Column(DECIMAL(8, 6), default=0)
     
     # Kết quả
-    result_data = Column(JSON, default={})
+    result_data = Column(JSONB, default={})
     error_message = Column(Text)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
@@ -40,4 +41,3 @@ class TaskStep(Base):
     __table_args__ = (
         UniqueConstraint('task_id', 'step_number', name='uq_task_step_number'),
     )
-

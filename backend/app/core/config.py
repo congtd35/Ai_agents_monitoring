@@ -5,7 +5,7 @@ import os
 
 class Settings(BaseSettings):
     # Database
-    database_url: str = "sqlite:///./ai_agents.db"
+    database_url: str = "postgresql+psycopg2://user:password@localhost:5432/dbname"
     
     # Security
     secret_key: str = "your-super-secret-key-change-in-production"
