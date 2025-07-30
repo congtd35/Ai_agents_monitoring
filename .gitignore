@@ -1,0 +1,36 @@
+# Node
+node_modules
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+
+# Build artifacts
+build/
+dist/
+
+# Frontend build output
+frontend/dist/
+
+# IDEs
+.vscode/
+.idea/
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+logs/
+
+# Heroku
+Procfile
+
+# Other
+*.zip
+*.tar.gz
+
+
